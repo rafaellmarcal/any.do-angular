@@ -1,10 +1,23 @@
 import { Component } from '@angular/core';
+import { UsuarioService } from './core/usuario.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  title = 'app';
+
+  usuarioLogado: boolean;
+
+  constructor(private usuarioService: UsuarioService) { }
+
+  ngOnInit() {
+    if(this.usuarioService.isLoggedIn()){
+      this.usuarioLogado = true;
+    }
+
+    this.usuarioService.loginEmmiter.subscribe(() =>
+      this.usuarioLogado = this.usuarioService.isLoggedIn()
+    );
+  }
 }

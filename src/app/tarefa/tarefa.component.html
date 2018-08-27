@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Tarefas</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <a class="btn btn-primary btn-md" [routerLink]="['/cadastrar-tarefa']">Cadastrar</a>
+    </div>
+  </div>
+</div>
+<div class="table-responsive table-striped">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Título</th>
+        <th scope="col">Data de Cadastro</th>
+        <th scope="col">Data de Conclusão</th>
+        <th scope="col">Concluída</th>
+        <th scope="col">&nbsp;</th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tarefa of tarefas">
+        <th scope="row">{{tarefa.titulo}}</th>
+        <td>{{tarefa.datacadastro}}</td>
+        <td>{{tarefa.dataconclusao ? tarefa.dataconclusao : '-'}}</td>
+        <td>{{tarefa.concluida === false ? 'Não' : 'Sim'}}</td>
+        <td>
+          <button class="btn btn-success btn-sm" (click)="concluir(tarefa)" [disabled]="tarefa.concluida">Concluir</button>
+        </td>
+        <td>
+          <a class="btn btn-info btn-sm" [routerLink]="['/editar-tarefa', tarefa.tarefaid]" *ngIf="!tarefa.concluida else disabledButton">Editar</a>&nbsp;
+          <ng-template #disabledButton>
+            <button class="btn btn-info btn-sm" disabled>Editar</button>
+          </ng-template>
+
+          <a class="btn btn-info btn-sm" [routerLink]="['/visualizar-tarefa', tarefa.tarefaid]">Visualizar</a>&nbsp;
+          <button class="btn btn-danger btn-sm" (click)="excluir(tarefa)">Excluir</button>
+        </td>
+      </tr>
+      <tr *ngIf="!tarefas.length">
+        <td colspan="6" class="text-center">
+          <strong>Não há tarefas cadastradas!</strong>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
